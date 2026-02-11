@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  userId    String    @default("default-user")
+  title     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String // "user" | "assistant" | "system"
+  content        String       @db.Text
+  agentType      String? // "router" | "support" | "order" | "billing"
+  reasoning      String?      @db.Text // AI reasoning process
+  toolCalls      Json? // Store tool calls made
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+  @@index([createdAt])
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  orderNumber   String   @unique
+  userId        String
+  status        String // "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+  totalAmount   Float
+  items         Json // Array of order items
+  shippingInfo  Json // Shipping address and details
+  trackingNumber String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([orderNumber])
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  invoiceNumber String   @unique
+  userId        String
+  orderId       String?
+  amount        Float
+  status        String // "paid" | "pending" | "overdue" | "cancelled"
+  dueDate       DateTime
+  paidDate      DateTime?
+  items         Json // Invoice line items
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([invoiceNumber])
+  @@index([status])
+}
+
+model Refund {
+  id            String   @id @default(cuid())
+  refundNumber  String   @unique
+  userId        String
+  orderId       String
+  amount        Float
+  status        String // "pending" | "processing" | "completed" | "rejected"
+  reason        String   @db.Text
+  processedDate DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String   @db.Text
+  answer    String   @db.Text
+  category  String // "general" | "orders" | "billing" | "technical"
+  keywords  String[] // Array of searchable keywords
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
