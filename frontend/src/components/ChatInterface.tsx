@@ -134,19 +134,19 @@ export default function ChatInterface({ conversationId, onConversationCreated }:
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-gradient-to-b from-gray-50 to-white">
+    <div className="flex-1 flex flex-col bg-gradient-to-b from-gray-50 to-white min-h-0">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-6 space-y-4 sm:space-y-6">
         {messages.length === 0 && !isTyping && (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full px-4">
             <div className="text-center max-w-md animate-fade-in">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <Send size={40} className="text-blue-600" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+                <Send size={32} className="text-blue-600 sm:w-10 sm:h-10" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Welcome to AI Customer Support
               </h2>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                 Our intelligent multi-agent system is ready to help you with support inquiries,
                 order tracking, and billing questions.
               </p>
@@ -168,9 +168,9 @@ export default function ChatInterface({ conversationId, onConversationCreated }:
       </div>
 
       {/* Input Area */}
-      <div className="bg-white border-t-2 border-gray-200 p-6 shadow-lg">
+      <div className="bg-white border-t-2 border-gray-200 p-3 sm:p-6 shadow-lg">
         <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-          <div className="flex gap-3">
+          <div className="flex gap-2 sm:gap-3">
             <input
               type="text"
               value={input}
@@ -178,22 +178,22 @@ export default function ChatInterface({ conversationId, onConversationCreated }:
               placeholder="Type your message..."
               disabled={isLoading}
               style={{ color: '#111827' }}
-              className="flex-1 px-5 py-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-base bg-white placeholder:text-gray-400 transition-all shadow-sm font-medium"
+              className="flex-1 px-3 py-3 sm:px-5 sm:py-4 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed text-sm sm:text-base bg-white placeholder:text-gray-400 transition-all shadow-sm font-medium"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all flex items-center gap-2 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none"
+              className="px-4 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed transition-all flex items-center gap-1 sm:gap-2 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none text-sm sm:text-base"
             >
               {isLoading ? (
                 <>
-                  <Loader2 size={22} className="animate-spin" />
-                  <span>Sending</span>
+                  <Loader2 size={18} className="animate-spin sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">Sending</span>
                 </>
               ) : (
                 <>
-                  <Send size={22} />
-                  <span>Send</span>
+                  <Send size={18} className="sm:w-6 sm:h-6" />
+                  <span className="hidden sm:inline">Send</span>
                 </>
               )}
             </button>

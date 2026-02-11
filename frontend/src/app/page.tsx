@@ -8,7 +8,7 @@ import { MessageSquare, Plus } from 'lucide-react';
 export default function Home() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [conversations, setConversations] = useState<any[]>([]);
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const loadConversations = async () => {
     try {
@@ -53,10 +53,18 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+      {/* Mobile backdrop */}
+      {showSidebar && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
+      
       {/* Sidebar */}
       {showSidebar && (
-        <div className="w-80 bg-white border-r border-gray-200 flex flex-col shadow-lg">
+        <div className="fixed lg:relative w-80 sm:w-96 lg:w-80 bg-white border-r border-gray-200 flex flex-col shadow-lg z-50 h-full">
           <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
             <button
               onClick={handleNewConversation}
@@ -77,21 +85,21 @@ export default function Home() {
       )}
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-3">
+        <header className="bg-white border-b border-gray-200 px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               onClick={() => setShowSidebar(!showSidebar)}
-              className="p-2 hover:bg-blue-50 rounded-xl transition-all hover:scale-110"
+              className="p-2 hover:bg-blue-50 rounded-xl transition-all hover:scale-110 flex-shrink-0"
             >
-              <MessageSquare size={24} className="text-blue-600" />
+              <MessageSquare size={20} className="text-blue-600 sm:w-6 sm:h-6" />
             </button>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent truncate">
                 AI Customer Support
               </h1>
-              <p className="text-sm text-gray-600 font-medium">Multi-agent assistance system</p>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium hidden sm:block">Multi-agent assistance system</p>
             </div>
           </div>
         </header>
