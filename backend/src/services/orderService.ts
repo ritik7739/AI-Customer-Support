@@ -5,20 +5,20 @@ export class OrderService {
   async getOrderByNumber(orderNumber: string): Promise<Order | null> {
     return await prisma.order.findUnique({
       where: { orderNumber },
-    });
+    }) as Order | null;
   }
 
   async getUserOrders(userId: string): Promise<Order[]> {
     return await prisma.order.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
-    });
+    }) as Order[];
   }
 
   async getOrderById(orderId: string): Promise<Order | null> {
     return await prisma.order.findUnique({
       where: { id: orderId },
-    });
+    }) as Order | null;
   }
 
   async updateOrderStatus(
@@ -28,7 +28,7 @@ export class OrderService {
     return await prisma.order.update({
       where: { id: orderId },
       data: { status },
-    });
+    }) as Order;
   }
 
   async searchOrders(query: string): Promise<Order[]> {
@@ -40,6 +40,6 @@ export class OrderService {
         ],
       },
       take: 10,
-    });
+    }) as Order[];
   }
 }

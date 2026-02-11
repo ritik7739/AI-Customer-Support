@@ -8,7 +8,7 @@ export class ConversationService {
         userId,
         title: title || 'New Conversation',
       },
-    });
+    }) as Conversation;
   }
 
   async getConversation(id: string): Promise<Conversation | null> {
@@ -19,7 +19,7 @@ export class ConversationService {
           orderBy: { createdAt: 'asc' },
         },
       },
-    });
+    }) as Conversation | null;
   }
 
   async getUserConversations(userId: string): Promise<Conversation[]> {
@@ -32,7 +32,7 @@ export class ConversationService {
         },
       },
       orderBy: { updatedAt: 'desc' },
-    });
+    }) as Conversation[];
   }
 
   async deleteConversation(id: string): Promise<void> {
@@ -45,7 +45,7 @@ export class ConversationService {
     return await prisma.conversation.update({
       where: { id },
       data: { title },
-    });
+    }) as Conversation;
   }
 }
 
@@ -60,14 +60,14 @@ export class MessageService {
   }): Promise<Message> {
     return await prisma.message.create({
       data,
-    });
+    }) as Message;
   }
 
   async getConversationMessages(conversationId: string): Promise<Message[]> {
     return await prisma.message.findMany({
       where: { conversationId },
       orderBy: { createdAt: 'asc' },
-    });
+    }) as Message[];
   }
 
   async getRecentMessages(conversationId: string, limit: number = 10): Promise<Message[]> {
@@ -75,6 +75,6 @@ export class MessageService {
       where: { conversationId },
       orderBy: { createdAt: 'desc' },
       take: limit,
-    });
+    }) as Message[];
   }
 }

@@ -5,27 +5,27 @@ export class BillingService {
   async getInvoiceByNumber(invoiceNumber: string): Promise<Invoice | null> {
     return await prisma.invoice.findUnique({
       where: { invoiceNumber },
-    });
+    }) as Invoice | null;
   }
 
   async getUserInvoices(userId: string): Promise<Invoice[]> {
     return await prisma.invoice.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
-    });
+    }) as Invoice[];
   }
 
   async getRefundByNumber(refundNumber: string): Promise<Refund | null> {
     return await prisma.refund.findUnique({
       where: { refundNumber },
-    });
+    }) as Refund | null;
   }
 
   async getRefundsByOrderId(orderId: string): Promise<Refund[]> {
     return await prisma.refund.findMany({
       where: { orderId },
       orderBy: { createdAt: 'desc' },
-    });
+    }) as Refund[];
   }
 
   async createRefund(data: {
@@ -43,7 +43,7 @@ export class BillingService {
         refundNumber,
         status: 'pending',
       },
-    });
+    }) as Refund;
   }
 
   async updateRefundStatus(
@@ -56,6 +56,6 @@ export class BillingService {
         status,
         processedDate: status === 'completed' ? new Date() : undefined,
       },
-    });
+    }) as Refund;
   }
 }
