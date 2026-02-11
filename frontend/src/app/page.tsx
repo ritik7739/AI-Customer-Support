@@ -10,6 +10,24 @@ export default function Home() {
   const [conversations, setConversations] = useState<any[]>([]);
   const [showSidebar, setShowSidebar] = useState(false);
 
+  // Set sidebar open by default on larger screens
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) { // lg breakpoint
+        setShowSidebar(true);
+      } else {
+        setShowSidebar(false);
+      }
+    };
+    
+    // Set initial state
+    handleResize();
+    
+    // Listen for window resize
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const loadConversations = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chat/conversations?userId=default-user`);
